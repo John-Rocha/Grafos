@@ -1,0 +1,63 @@
+Aula 1 — Fundamentos e Origem dos Grafos
+
+Objetivo da aula:
+* Compreender o que é um grafo
+* Entender sua origem
+* Conhecer grau, vértices e arestas
+* Implementar duas representações em C
+
+Estrutura da aula
+
+Bloco 1 — Motivação [5–10 min]
+Pergunta guia:
+Como sistemas como o Google Maps encontram rotas?
+
+Pontos que devem aparecer:
+* pontos -> locais
+* conexões ->caminhos
+* abstração -> grafo
+
+Bloco 2 — Origem [10 min]
+* Leonhard Euler
+* Problema das Pontes de Königsberg
+* Ideia central:
+  - abstrair o problema para vértices e arestas
+
+Bloco 3 — Definições [10–15 min]
+Definir claramente:
+* grafo
+* vértice
+* aresta
+* grau
+
+Explicação deve ser apoiada com atividades no quadro:
+* desenhar um grafo simples
+* perguntar grau dos vértices
+
+Bloco 4 — Representações [15 min]
+Parte 1 — Matriz de adjacência
+* conceito
+* exemplo
+* vantagem/desvantagem
+
+Parte 2 — Lista de adjacência
+* conceito
+* exemplo
+* vantagem/desvantagem
+
+Comparação obrigatória
+
+Bloco 5 — Prática em C[40–50 min]
+
+Parte 1 — Matriz
+Funções mínimas:
+* adicionar aresta
+* imprimir matriz
+* calcular o grau de cada vértice
+
+Parte 2 — Lista
+Funções mínimas:
+* adicionar aresta
+* imprimir lista
+* calcular o grau de cada vértice
+
