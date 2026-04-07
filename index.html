@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamentos e Origem dos Grafos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<main id="presentation">
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 1 — Capa
+  ══════════════════════════════════════════ -->
+  <section class="slide slide-cover active" data-slide="1">
+    <div class="cover-backdrop">
+      <svg class="cover-constellation" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <filter id="star-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g class="const-edges">
+          <line x1="120" y1="200" x2="340" y2="130"/>
+          <line x1="340" y1="130" x2="580" y2="210"/>
+          <line x1="580" y1="210" x2="750" y2="100"/>
+          <line x1="750" y1="100" x2="950" y2="180"/>
+          <line x1="950" y1="180" x2="1100" y2="80"/>
+          <line x1="120" y1="200" x2="280" y2="360"/>
+          <line x1="280" y1="360" x2="480" y2="420"/>
+          <line x1="580" y1="210" x2="480" y2="420"/>
+          <line x1="480" y1="420" x2="650" y2="510"/>
+          <line x1="750" y1="100" x2="650" y2="510"/>
+          <line x1="950" y1="180" x2="850" y2="390"/>
+          <line x1="850" y1="390" x2="650" y2="510"/>
+          <line x1="850" y1="390" x2="1060" y2="460"/>
+          <line x1="1100" y1="80" x2="1060" y2="460"/>
+          <line x1="340" y1="130" x2="280" y2="360"/>
+          <line x1="60" y1="500" x2="120" y2="200"/>
+          <line x1="60" y1="500" x2="280" y2="360"/>
+        </g>
+        <g class="const-nodes" filter="url(#star-glow)">
+          <circle cx="120" cy="200" r="5"/>
+          <circle cx="340" cy="130" r="7"/>
+          <circle cx="580" cy="210" r="6"/>
+          <circle cx="750" cy="100" r="9"/>
+          <circle cx="950" cy="180" r="5"/>
+          <circle cx="1100" cy="80" r="4"/>
+          <circle cx="280" cy="360" r="6"/>
+          <circle cx="480" cy="420" r="7"/>
+          <circle cx="650" cy="510" r="5"/>
+          <circle cx="850" cy="390" r="6"/>
+          <circle cx="1060" cy="460" r="4"/>
+          <circle cx="60" cy="500" r="5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="cover-content">
+      <p class="cover-eyebrow">Estrutura de Dados · Aula 1</p>
+      <h1 class="cover-title">
+        <span class="cover-line-1">Fundamentos e Origem</span>
+        <span class="cover-line-2">dos <em>Grafos</em></span>
+      </h1>
+      <p class="cover-subtitle">Introdução à Teoria dos Grafos</p>
+      <div class="cover-rule"></div>
+      <p class="cover-meta">2026.1</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 2 — Objetivos
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="2">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge">Apresentação</span>
+        <h2>Objetivos da Aula</h2>
+      </header>
+      <ol class="objectives-list">
+        <li class="objective-item anim-item">
+          <span class="obj-num">01</span>
+          <span>Entender o que é um <strong>grafo</strong></span>
+        </li>
+        <li class="objective-item anim-item">
+          <span class="obj-num">02</span>
+          <span>Conhecer a <strong>origem histórica</strong> da teoria dos grafos</span>
+        </li>
+        <li class="objective-item anim-item">
+          <span class="obj-num">03</span>
+          <span>Aprender os conceitos de <strong>vértice</strong>, <strong>aresta</strong> e <strong>grau</strong></span>
+        </li>
+        <li class="objective-item anim-item">
+          <span class="obj-num">04</span>
+          <span>Comparar <strong>matriz</strong> e <strong>lista de adjacência</strong></span>
+        </li>
+        <li class="objective-item anim-item">
+          <span class="obj-num">05</span>
+          <span>Implementar essas estruturas em <strong>C</strong></span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 3 — Pergunta guia
+  ══════════════════════════════════════════ -->
+  <section class="slide slide-centered slide-radial-blue" data-slide="3">
+    <div class="slide-content center-col">
+      <span class="block-badge badge-motivation">Bloco 1 · Motivação</span>
+      <div class="question-display">
+        <p class="question-pre">Pergunta guia:</p>
+        <h2 class="question-text">
+          Como sistemas como o <em>Google Maps</em><br>encontram rotas?
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 4 — Ideia central da motivação
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="4">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-motivation">Motivação</span>
+        <h2>A Abstração por Trás dos Mapas</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="mapping-table">
+            <div class="mapping-row anim-item">
+              <span class="map-left">📍 Local</span>
+              <span class="map-arrow">→</span>
+              <span class="map-right c-gold">Vértice</span>
+            </div>
+            <div class="mapping-row anim-item">
+              <span class="map-left">🛣️ Caminho</span>
+              <span class="map-arrow">→</span>
+              <span class="map-right c-gold">Aresta</span>
+            </div>
+            <div class="mapping-row anim-item">
+              <span class="map-left">🗺️ Mapa</span>
+              <span class="map-arrow">→</span>
+              <span class="map-right c-gold">Grafo</span>
+            </div>
+          </div>
+          <p class="note-text">Grafos modelam <strong>relações e conexões</strong> entre elementos do mundo real.</p>
+        </div>
+        <div class="svg-frame">
+          <svg viewBox="0 0 300 230" class="diagram-svg" aria-label="Grafo de cidades e caminhos">
+            <defs><filter id="glow-sm"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <line x1="70" y1="75" x2="210" y2="55" class="d-edge"/>
+            <line x1="70" y1="75" x2="90" y2="180" class="d-edge"/>
+            <line x1="210" y1="55" x2="245" y2="165" class="d-edge"/>
+            <line x1="90" y1="180" x2="245" y2="165" class="d-edge"/>
+            <line x1="210" y1="55" x2="90" y2="180" class="d-edge d-dashed"/>
+            <g filter="url(#glow-sm)">
+              <circle cx="70" cy="75" r="20" class="d-node"/>
+              <circle cx="210" cy="55" r="20" class="d-node"/>
+              <circle cx="90" cy="180" r="20" class="d-node"/>
+              <circle cx="245" cy="165" r="20" class="d-node"/>
+            </g>
+            <text x="70" y="80" class="d-label">A</text>
+            <text x="210" y="60" class="d-label">B</text>
+            <text x="90" y="185" class="d-label">C</text>
+            <text x="245" y="170" class="d-label">D</text>
+            <text x="68" y="112" class="d-caption" fill="var(--c-gold)">vértice</text>
+            <text x="148" y="44" class="d-caption" fill="var(--c-blue)">aresta</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 5 — Origem histórica
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="5">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-origin">Bloco 2 · Origem</span>
+        <h2>O Pai da Teoria dos Grafos</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="euler-card">
+            <img src="assets/Leonhard Euler.jpg" alt="Retrato de Leonhard Euler" class="euler-portrait" style="width:130px;height:150px;object-fit:cover;border-radius:8px;border:1px solid #1e3050;display:block;">
+            <div class="euler-info">
+              <h3>Leonhard Euler</h3>
+              <p class="euler-dates">1707 – 1783</p>
+              <p>Matemático suíço — autor de mais de 800 trabalhos científicos</p>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-col">
+          <div class="timeline">
+            <div class="tl-item anim-item">
+              <div class="tl-year">1735</div>
+              <div class="tl-content">
+                <strong>O Problema</strong>
+                <p>Euler defronta-se com o desafio das pontes de Königsberg</p>
+              </div>
+            </div>
+            <div class="tl-item anim-item">
+              <div class="tl-year">1736</div>
+              <div class="tl-content">
+                <strong>A Solução</strong>
+                <p>Publica <em>"Solutio problematis ad geometriam situs pertinentis"</em></p>
+              </div>
+            </div>
+            <div class="tl-item anim-item">
+              <div class="tl-year tl-year--gold">Marco</div>
+              <div class="tl-content">
+                <strong>Teoria dos Grafos</strong>
+                <p>Nasce a primeira disciplina formal sobre grafos e redes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 6 — Pontes de Königsberg
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="6">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-origin">Origem</span>
+        <h2>As Pontes de Königsberg</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <p class="body-text">O rio Pregel dividia a cidade de Königsberg em <strong>4 regiões</strong>, conectadas por <strong>7 pontes</strong>.</p>
+          <div class="challenge-box">
+            <span class="challenge-icon">🎯</span>
+            <p><strong>O Desafio:</strong> É possível caminhar pela cidade atravessando cada ponte <em>exatamente uma vez</em> e retornar ao ponto de partida?</p>
+          </div>
+          <div class="euler-answer">
+            <strong>Resposta de Euler:</strong> <span class="c-gold">Não — e ele provou matematicamente.</span>
+          </div>
+        </div>
+        <div class="svg-frame">
+          <svg viewBox="0 0 320 220" class="diagram-svg konig-svg" aria-label="Mapa simplificado das Pontes de Königsberg">
+            <rect x="0" y="0" width="320" height="220" fill="#090e1a"/>
+            <rect x="0" y="60" width="320" height="100" fill="#0c1e3a" opacity=".85"/>
+            <rect x="0" y="0" width="320" height="56" fill="#163328" opacity=".95"/>
+            <text x="160" y="31" class="land-text">Margem Norte</text>
+            <rect x="0" y="164" width="320" height="56" fill="#163328" opacity=".95"/>
+            <text x="160" y="194" class="land-text">Margem Sul</text>
+            <ellipse cx="90" cy="110" rx="62" ry="28" fill="#1b4232" opacity=".95"/>
+            <text x="90" y="115" class="land-text">Ilha A</text>
+            <ellipse cx="232" cy="110" rx="62" ry="28" fill="#1b4232" opacity=".95"/>
+            <text x="232" y="115" class="land-text">Ilha B</text>
+            <rect x="60" y="46" width="10" height="28" rx="2" class="bridge-rect"/>
+            <rect x="98" y="46" width="10" height="28" rx="2" class="bridge-rect"/>
+            <rect x="60" y="146" width="10" height="28" rx="2" class="bridge-rect"/>
+            <rect x="98" y="146" width="10" height="28" rx="2" class="bridge-rect"/>
+            <rect x="216" y="46" width="10" height="28" rx="2" class="bridge-rect"/>
+            <rect x="216" y="146" width="10" height="28" rx="2" class="bridge-rect"/>
+            <rect x="150" y="104" width="24" height="10" rx="2" class="bridge-rect"/>
+            <text x="245" y="72" class="bridge-count">7 pontes</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 7 — A grande ideia de Euler
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="7">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-origin">Origem</span>
+        <h2>A Grande Ideia de Euler</h2>
+      </header>
+      <div class="euler-abstraction">
+        <div class="abs-side">
+          <p class="abs-label">Mapa Real</p>
+          <svg viewBox="0 0 200 148" class="diagram-svg abs-svg" aria-label="Königsberg simplificado">
+            <rect x="0" y="0" width="200" height="148" fill="#090e1a"/>
+            <rect x="0" y="36" width="200" height="76" fill="#0c1e3a" opacity=".8"/>
+            <rect x="0" y="0" width="200" height="32" fill="#163328" opacity=".9"/>
+            <rect x="0" y="116" width="200" height="32" fill="#163328" opacity=".9"/>
+            <ellipse cx="58" cy="74" rx="38" ry="20" fill="#1b4232" opacity=".95"/>
+            <ellipse cx="148" cy="74" rx="38" ry="20" fill="#1b4232" opacity=".95"/>
+            <rect x="40" y="28" width="8" height="18" rx="2" class="bridge-rect" opacity=".9"/>
+            <rect x="60" y="28" width="8" height="18" rx="2" class="bridge-rect" opacity=".9"/>
+            <rect x="40" y="102" width="8" height="18" rx="2" class="bridge-rect" opacity=".9"/>
+            <rect x="60" y="102" width="8" height="18" rx="2" class="bridge-rect" opacity=".9"/>
+            <rect x="134" y="28" width="8" height="18" rx="2" class="bridge-rect" opacity=".9"/>
+            <rect x="134" y="102" width="8" height="18" rx="2" class="bridge-rect" opacity=".9"/>
+            <rect x="94" y="68" width="16" height="8" rx="2" class="bridge-rect" opacity=".9"/>
+          </svg>
+        </div>
+        <div class="abs-arrow-col">
+          <svg viewBox="0 0 64 28" class="arrow-svg" aria-hidden="true">
+            <line x1="4" y1="14" x2="52" y2="14" stroke="var(--c-gold)" stroke-width="1.5"/>
+            <polyline points="44,7 54,14 44,21" fill="none" stroke="var(--c-gold)" stroke-width="1.5"/>
+          </svg>
+          <p class="abs-transform">Euler abstrai</p>
+        </div>
+        <div class="abs-side">
+          <p class="abs-label">Grafo Equivalente</p>
+          <svg viewBox="0 0 200 148" class="diagram-svg abs-svg" aria-label="Grafo de Königsberg: 4 vértices, 7 arestas">
+            <defs><filter id="eg"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <path d="M 88,22 Q 50,40 35,62" class="euler-e"/>
+            <path d="M 94,25 Q 66,36 40,64" class="euler-e"/>
+            <path d="M 88,126 Q 50,108 35,86" class="euler-e"/>
+            <path d="M 94,123 Q 66,112 40,84" class="euler-e"/>
+            <line x1="112" y1="22" x2="163" y2="62" class="euler-e"/>
+            <line x1="112" y1="126" x2="163" y2="86" class="euler-e"/>
+            <line x1="66" y1="74" x2="134" y2="74" class="euler-e"/>
+            <g filter="url(#eg)">
+              <circle cx="100" cy="16" r="13" class="euler-node"/>
+              <circle cx="100" cy="132" r="13" class="euler-node"/>
+              <circle cx="28" cy="74" r="13" class="euler-node"/>
+              <circle cx="172" cy="74" r="13" class="euler-node"/>
+            </g>
+            <text x="100" y="20" class="euler-lbl">N</text>
+            <text x="100" y="136" class="euler-lbl">S</text>
+            <text x="28" y="78" class="euler-lbl">A</text>
+            <text x="172" y="78" class="euler-lbl">B</text>
+          </svg>
+        </div>
+      </div>
+      <div class="abstraction-legend">
+        <div class="abs-legend-item">
+          <span class="abs-from">Regiões de terra</span>
+          <span class="abs-sep">→</span>
+          <span class="c-gold abs-to">Vértices</span>
+        </div>
+        <div class="abs-divider"></div>
+        <div class="abs-legend-item">
+          <span class="abs-from">Pontes</span>
+          <span class="abs-sep">→</span>
+          <span class="c-gold abs-to">Arestas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 8 — O que é um grafo?
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="8">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-definition">Bloco 3 · Definições</span>
+        <h2>O que é um Grafo?</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="definition-block">
+            <p class="def-text">Um <strong>grafo</strong> é uma estrutura formada por um conjunto de <strong class="c-gold">vértices</strong> e um conjunto de <strong class="c-blue">arestas</strong>, usada para representar <em>relações entre elementos</em>.</p>
+          </div>
+          <div class="notation-block">
+            <p class="notation-label">Notação formal</p>
+            <div class="notation-formula">G = (V, E)</div>
+            <p class="notation-desc">V — vértices &emsp;·&emsp; E — arestas</p>
+          </div>
+          <div class="example-block">
+            <p class="example-label">Exemplo</p>
+            <p>V = {A, B, C, D} &emsp; |V| = 4</p>
+            <p>E = {AB, BC, CD, DA, AC} &emsp; |E| = 5</p>
+          </div>
+        </div>
+        <div class="svg-frame">
+          <svg viewBox="0 0 300 240" class="diagram-svg" aria-label="Grafo com 4 vértices e 5 arestas">
+            <defs><filter id="gn1"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <line x1="75" y1="75" x2="225" y2="75" class="d-edge"/>
+            <line x1="225" y1="75" x2="225" y2="180"/>
+            <line x1="225" y1="180" x2="75" y2="180" class="d-edge"/>
+            <line x1="75" y1="180" x2="75" y2="75" class="d-edge"/>
+            <line x1="75" y1="75" x2="225" y2="180" class="d-edge d-dashed"/>
+            <line x1="225" y1="75" x2="225" y2="180" class="d-edge"/>
+            <g filter="url(#gn1)">
+              <circle cx="75" cy="75" r="22" class="d-node"/>
+              <circle cx="225" cy="75" r="22" class="d-node"/>
+              <circle cx="225" cy="180" r="22" class="d-node"/>
+              <circle cx="75" cy="180" r="22" class="d-node"/>
+            </g>
+            <text x="75" y="80" class="d-label">A</text>
+            <text x="225" y="80" class="d-label">B</text>
+            <text x="225" y="185" class="d-label">C</text>
+            <text x="75" y="185" class="d-label">D</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 9 — Vértice e aresta
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="9">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-definition">Definições</span>
+        <h2>Vértice e Aresta</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="concept-card border-gold anim-item">
+            <h3 class="c-gold">Vértice (Nó)</h3>
+            <p>Representa um <strong>ponto, elemento ou entidade</strong> do problema.</p>
+            <p class="concept-example">Ex.: cidade, pessoa, página web, gene</p>
+          </div>
+          <div class="concept-card border-blue anim-item">
+            <h3 class="c-blue">Aresta (Ligação)</h3>
+            <p>Representa a <strong>conexão ou relação</strong> entre dois vértices.</p>
+            <p class="concept-example">Ex.: estrada, amizade, hiperlink, reação</p>
+          </div>
+        </div>
+        <div class="svg-frame">
+          <svg viewBox="0 0 300 250" class="diagram-svg" aria-label="Grafo com vértice e aresta identificados">
+            <defs><filter id="gn2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <line x1="80" y1="90" x2="220" y2="90" class="d-edge"/>
+            <line x1="220" y1="90" x2="150" y2="195" class="d-edge"/>
+            <line x1="80" y1="90" x2="150" y2="195" class="d-edge"/>
+            <!-- Vertex annotation -->
+            <line x1="80" y1="64" x2="80" y2="36" stroke="var(--c-gold)" stroke-width="1" stroke-dasharray="4,3"/>
+            <circle cx="80" cy="30" r="3" fill="var(--c-gold)"/>
+            <text x="80" y="21" class="anno-text" fill="var(--c-gold)">Vértice</text>
+            <!-- Edge annotation -->
+            <line x1="150" y1="76" x2="150" y2="48" stroke="var(--c-blue)" stroke-width="1" stroke-dasharray="4,3"/>
+            <circle cx="150" cy="42" r="3" fill="var(--c-blue)"/>
+            <text x="150" y="33" class="anno-text" fill="var(--c-blue)">Aresta</text>
+            <g filter="url(#gn2)">
+              <circle cx="80" cy="90" r="22" class="d-node d-node--gold"/>
+              <circle cx="220" cy="90" r="22" class="d-node"/>
+              <circle cx="150" cy="195" r="22" class="d-node"/>
+            </g>
+            <text x="80" y="95" class="d-label">A</text>
+            <text x="220" y="95" class="d-label">B</text>
+            <text x="150" y="200" class="d-label">C</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 10 — Grau de um vértice
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="10">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-definition">Definições</span>
+        <h2>Grau de um Vértice</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="definition-block">
+            <p class="def-text">O <strong>grau</strong> de um vértice é o número de <strong class="c-gold">arestas</strong> que incidem sobre ele.</p>
+          </div>
+          <div class="degree-table">
+            <div class="degree-row">
+              <span class="degree-node c-gold-border">A</span>
+              <span class="degree-eq">deg(A) =</span>
+              <span class="degree-num">3</span>
+            </div>
+            <div class="degree-row">
+              <span class="degree-node">B</span>
+              <span class="degree-eq">deg(B) =</span>
+              <span class="degree-num">2</span>
+            </div>
+            <div class="degree-row">
+              <span class="degree-node">C</span>
+              <span class="degree-eq">deg(C) =</span>
+              <span class="degree-num">2</span>
+            </div>
+            <div class="degree-row">
+              <span class="degree-node">D</span>
+              <span class="degree-eq">deg(D) =</span>
+              <span class="degree-num">1</span>
+            </div>
+          </div>
+          <div class="theorem-box">
+            <p>Soma dos graus = <strong class="c-gold">2 × |E|</strong></p>
+            <p class="theorem-note">Cada aresta contribui com 2 graus</p>
+          </div>
+        </div>
+        <div class="svg-frame">
+          <svg viewBox="0 0 300 250" class="diagram-svg" aria-label="Grafo mostrando grau de cada vértice">
+            <defs><filter id="gn3"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <line x1="150" y1="58" x2="258" y2="140" class="d-edge"/>
+            <line x1="150" y1="58" x2="150" y2="198" class="d-edge"/>
+            <line x1="150" y1="58" x2="42" y2="140" class="d-edge"/>
+            <line x1="258" y1="140" x2="150" y2="198" class="d-edge"/>
+            <text x="150" y="34" class="deg-lbl c-gold-fill">deg = 3</text>
+            <text x="283" y="143" class="deg-lbl">deg = 2</text>
+            <text x="150" y="225" class="deg-lbl">deg = 2</text>
+            <text x="10" y="143" class="deg-lbl">deg = 1</text>
+            <g filter="url(#gn3)">
+              <circle cx="150" cy="58" r="22" class="d-node d-node--gold"/>
+              <circle cx="258" cy="140" r="22" class="d-node"/>
+              <circle cx="150" cy="198" r="22" class="d-node"/>
+              <circle cx="42" cy="140" r="22" class="d-node"/>
+            </g>
+            <text x="150" y="63" class="d-label">A</text>
+            <text x="258" y="145" class="d-label">B</text>
+            <text x="150" y="203" class="d-label">C</text>
+            <text x="42" y="145" class="d-label">D</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 11 — Interação didática
+  ══════════════════════════════════════════ -->
+  <section class="slide slide-centered" data-slide="11">
+    <div class="slide-content center-col">
+      <span class="block-badge badge-definition">Atividade em Sala</span>
+      <div class="activity-box">
+        <span class="activity-icon">✏️</span>
+        <h2 class="c-green">Momento de Participação</h2>
+        <div class="activity-steps">
+          <div class="activity-step anim-item">
+            <span class="step-circle">1</span>
+            <span>O professor desenha um grafo simples no quadro</span>
+          </div>
+          <div class="activity-step anim-item">
+            <span class="step-circle">2</span>
+            <span>A turma identifica: quantos vértices? Quantas arestas?</span>
+          </div>
+          <div class="activity-step anim-item">
+            <span class="step-circle">3</span>
+            <span>Qual é o grau de cada vértice?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 12 — Por que representar no computador?
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="12">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-representation">Bloco 4 · Representações</span>
+        <h2>Por que Representar Grafos no Computador?</h2>
+      </header>
+      <div class="icon-cards">
+        <div class="icon-card anim-item">
+          <span class="ic-icon">💾</span>
+          <h3>Armazenar</h3>
+          <p>O computador precisa guardar a estrutura do grafo na memória</p>
+        </div>
+        <div class="icon-card anim-item">
+          <span class="ic-icon">⚙️</span>
+          <h3>Processar</h3>
+          <p>Algoritmos percorrem e manipulam o grafo para resolver problemas</p>
+        </div>
+        <div class="icon-card anim-item">
+          <span class="ic-icon">🔍</span>
+          <h3>Consultar</h3>
+          <p>Verificar rapidamente se dois nós estão conectados</p>
+        </div>
+      </div>
+      <div class="highlight-banner">
+        Duas representações principais: <strong class="c-gold">Matriz de Adjacência</strong> &ensp;·&ensp; <strong class="c-blue">Lista de Adjacência</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 13 — Matriz de adjacência
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="13">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-representation">Representações</span>
+        <h2>Matriz de Adjacência</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <p class="body-text">Uma <strong>matriz n × n</strong> onde <code>M[i][j] = 1</code> se existe aresta entre i e j, e <code>0</code> caso contrário.</p>
+          <svg viewBox="0 0 240 170" class="diagram-svg sm-svg" aria-label="Grafo com 4 vértices para exemplo da matriz">
+            <defs><filter id="gn4"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <line x1="40" y1="50" x2="200" y2="50" class="d-edge"/>
+            <line x1="40" y1="50" x2="200" y2="145" class="d-edge d-dashed"/>
+            <line x1="200" y1="50" x2="200" y2="145" class="d-edge"/>
+            <line x1="200" y1="50" x2="40" y2="145" class="d-edge"/>
+            <g filter="url(#gn4)">
+              <circle cx="40" cy="50" r="17" class="d-node"/>
+              <circle cx="200" cy="50" r="17" class="d-node"/>
+              <circle cx="200" cy="145" r="17" class="d-node"/>
+              <circle cx="40" cy="145" r="17" class="d-node"/>
+            </g>
+            <text x="40" y="55" class="d-label sm">1</text>
+            <text x="200" y="55" class="d-label sm">2</text>
+            <text x="200" y="150" class="d-label sm">3</text>
+            <text x="40" y="150" class="d-label sm">4</text>
+          </svg>
+        </div>
+        <div>
+          <div class="matrix-wrap">
+            <table class="adj-matrix">
+              <thead>
+                <tr>
+                  <th class="matrix-corner"></th>
+                  <th>1</th><th>2</th><th>3</th><th>4</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th>1</th><td>0</td><td class="m-one">1</td><td class="m-one">1</td><td>0</td></tr>
+                <tr><th>2</th><td class="m-one">1</td><td>0</td><td class="m-one">1</td><td class="m-one">1</td></tr>
+                <tr><th>3</th><td class="m-one">1</td><td class="m-one">1</td><td>0</td><td>0</td></tr>
+                <tr><th>4</th><td>0</td><td class="m-one">1</td><td>0</td><td>0</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note-text" style="margin-top:12px"><code>M[i][j] = 1</code> → existe aresta entre i e j</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 14 — Vantagens e desvantagens da matriz
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="14">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-representation">Representações</span>
+        <h2>Matriz de Adjacência — Análise</h2>
+      </header>
+      <div class="pros-cons-grid">
+        <div class="pros-card">
+          <h3 class="pros-title">✓ Vantagens</h3>
+          <ul class="feature-list">
+            <li>Simples de implementar</li>
+            <li>Verificação de aresta em <strong>O(1)</strong></li>
+            <li>Boa escolha para <strong>grafos densos</strong></li>
+          </ul>
+        </div>
+        <div class="cons-card">
+          <h3 class="cons-title">✗ Desvantagens</h3>
+          <ul class="feature-list">
+            <li>Consome <strong>O(V²)</strong> de memória</li>
+            <li>Ineficiente para <strong>grafos esparsos</strong></li>
+            <li>Custo alto para grafos muito grandes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="complexity-strip">
+        <div class="complexity-item">
+          <span class="cx-label">Memória</span>
+          <span class="cx-value c-gold">O(V²)</span>
+        </div>
+        <div class="cx-divider"></div>
+        <div class="complexity-item">
+          <span class="cx-label">Verificar aresta</span>
+          <span class="cx-value c-gold">O(1)</span>
+        </div>
+        <div class="cx-divider"></div>
+        <div class="complexity-item">
+          <span class="cx-label">Listar vizinhos</span>
+          <span class="cx-value c-gold">O(V)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 15 — Lista de adjacência
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="15">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-representation">Representações</span>
+        <h2>Lista de Adjacência</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <p class="body-text">Cada vértice mantém uma <strong>lista de seus vizinhos</strong>. Armazena apenas as conexões que existem.</p>
+          <svg viewBox="0 0 240 170" class="diagram-svg sm-svg" aria-label="Mesmo grafo para lista de adjacência">
+            <defs><filter id="gn5"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <line x1="40" y1="50" x2="200" y2="50" class="d-edge"/>
+            <line x1="40" y1="50" x2="200" y2="145" class="d-edge d-dashed"/>
+            <line x1="200" y1="50" x2="200" y2="145" class="d-edge"/>
+            <line x1="200" y1="50" x2="40" y2="145" class="d-edge"/>
+            <g filter="url(#gn5)">
+              <circle cx="40" cy="50" r="17" class="d-node"/>
+              <circle cx="200" cy="50" r="17" class="d-node"/>
+              <circle cx="200" cy="145" r="17" class="d-node"/>
+              <circle cx="40" cy="145" r="17" class="d-node"/>
+            </g>
+            <text x="40" y="55" class="d-label sm">1</text>
+            <text x="200" y="55" class="d-label sm">2</text>
+            <text x="200" y="150" class="d-label sm">3</text>
+            <text x="40" y="150" class="d-label sm">4</text>
+          </svg>
+        </div>
+        <div>
+          <div class="adj-list-visual">
+            <div class="alv-row">
+              <span class="alv-node">1</span>
+              <span class="alv-arr">→</span>
+              <div class="alv-neighbors">
+                <span class="alv-neigh">2</span><span class="alv-neigh">3</span><span class="alv-nil">NULL</span>
+              </div>
+            </div>
+            <div class="alv-row">
+              <span class="alv-node">2</span>
+              <span class="alv-arr">→</span>
+              <div class="alv-neighbors">
+                <span class="alv-neigh">1</span><span class="alv-neigh">3</span><span class="alv-neigh">4</span><span class="alv-nil">NULL</span>
+              </div>
+            </div>
+            <div class="alv-row">
+              <span class="alv-node">3</span>
+              <span class="alv-arr">→</span>
+              <div class="alv-neighbors">
+                <span class="alv-neigh">1</span><span class="alv-neigh">2</span><span class="alv-nil">NULL</span>
+              </div>
+            </div>
+            <div class="alv-row">
+              <span class="alv-node">4</span>
+              <span class="alv-arr">→</span>
+              <div class="alv-neighbors">
+                <span class="alv-neigh">2</span><span class="alv-nil">NULL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 16 — Vantagens e desvantagens da lista
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="16">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-representation">Representações</span>
+        <h2>Lista de Adjacência — Análise</h2>
+      </header>
+      <div class="pros-cons-grid">
+        <div class="pros-card">
+          <h3 class="pros-title">✓ Vantagens</h3>
+          <ul class="feature-list">
+            <li>Memória <strong>O(V + E)</strong> — muito econômica</li>
+            <li>Ideal para <strong>grafos esparsos</strong></li>
+            <li>Iterar sobre vizinhos é eficiente</li>
+          </ul>
+        </div>
+        <div class="cons-card">
+          <h3 class="cons-title">✗ Desvantagens</h3>
+          <ul class="feature-list">
+            <li>Verificar aresta exige busca <strong>O(grau)</strong></li>
+            <li>Implementação requer ponteiros e structs</li>
+          </ul>
+        </div>
+      </div>
+      <div class="complexity-strip">
+        <div class="complexity-item">
+          <span class="cx-label">Memória</span>
+          <span class="cx-value c-blue">O(V + E)</span>
+        </div>
+        <div class="cx-divider"></div>
+        <div class="complexity-item">
+          <span class="cx-label">Verificar aresta</span>
+          <span class="cx-value c-blue">O(grau)</span>
+        </div>
+        <div class="cx-divider"></div>
+        <div class="complexity-item">
+          <span class="cx-label">Listar vizinhos</span>
+          <span class="cx-value c-blue">O(grau)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 17 — Comparação
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="17">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-representation">Representações</span>
+        <h2>Comparação Direta</h2>
+      </header>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Aspecto</th>
+            <th class="c-gold">Matriz de Adjacência</th>
+            <th class="c-blue">Lista de Adjacência</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Consumo de memória</td>
+            <td>O(V²)</td>
+            <td class="winner">O(V + E) ✓</td>
+          </tr>
+          <tr>
+            <td>Verificar aresta (i, j)</td>
+            <td class="winner">O(1) ✓</td>
+            <td>O(grau)</td>
+          </tr>
+          <tr>
+            <td>Grafos densos</td>
+            <td class="winner">Melhor ✓</td>
+            <td>Ineficiente</td>
+          </tr>
+          <tr>
+            <td>Grafos esparsos</td>
+            <td>Ineficiente</td>
+            <td class="winner">Melhor ✓</td>
+          </tr>
+          <tr>
+            <td>Facilidade de implementação</td>
+            <td class="winner">Simples ✓</td>
+            <td>Requer ponteiros</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 18 — Parte prática: introdução
+  ══════════════════════════════════════════ -->
+  <section class="slide slide-centered slide-radial-purple" data-slide="18">
+    <div class="slide-content center-col">
+      <span class="block-badge badge-practice">Bloco 5 · Prática em C</span>
+      <div class="practice-headline">
+        <span class="practice-tag">&lt;código&gt;</span>
+        <h2 class="c-lavender">Hora de Implementar</h2>
+        <span class="practice-tag">&lt;/código&gt;</span>
+      </div>
+      <p class="practice-intro-text">Os conceitos vistos agora ganham vida em <strong>linguagem C</strong>.</p>
+      <div class="practice-goals">
+        <div class="pg-item anim-item">Implementar <strong>Matriz de Adjacência</strong></div>
+        <div class="pg-item anim-item">Implementar <strong>Lista de Adjacência</strong></div>
+        <div class="pg-item anim-item">Calcular o <strong>Grau dos Vértices</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 19 — Implementação com matriz
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="19">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-practice">Prática em C</span>
+        <h2>Implementação — Matriz de Adjacência</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="func-list">
+            <div class="func-item anim-item">
+              <span class="func-num func-gold">1</span>
+              <div>
+                <h4>adicionarAresta(u, v)</h4>
+                <p>Define <code>M[u][v] = M[v][u] = 1</code></p>
+              </div>
+            </div>
+            <div class="func-item anim-item">
+              <span class="func-num func-gold">2</span>
+              <div>
+                <h4>imprimirMatriz()</h4>
+                <p>Percorre e exibe a matriz n × n</p>
+              </div>
+            </div>
+            <div class="func-item anim-item">
+              <span class="func-num func-gold">3</span>
+              <div>
+                <h4>calcularGrau(v)</h4>
+                <p>Soma todos os elementos da linha v</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <pre class="code-block"><code><span class="ck">#define</span> MAX <span class="cn">10</span>
+<span class="ct">int</span> adj[MAX][MAX];
+<span class="ct">int</span> n; <span class="cc">/* nº de vértices */</span>
+
+<span class="ct">void</span> <span class="cf">adicionarAresta</span>(<span class="ct">int</span> u, <span class="ct">int</span> v) {
+  adj[u][v] = <span class="cn">1</span>;
+  adj[v][u] = <span class="cn">1</span>;
+}
+
+<span class="ct">int</span> <span class="cf">calcularGrau</span>(<span class="ct">int</span> v) {
+  <span class="ct">int</span> grau = <span class="cn">0</span>;
+  <span class="ck">for</span> (<span class="ct">int</span> i = <span class="cn">0</span>; i &lt; n; i++)
+    grau += adj[v][i];
+  <span class="ck">return</span> grau;
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 20 — Implementação com lista
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="20">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-practice">Prática em C</span>
+        <h2>Implementação — Lista de Adjacência</h2>
+      </header>
+      <div class="two-col">
+        <div>
+          <div class="func-list">
+            <div class="func-item anim-item">
+              <span class="func-num func-blue">1</span>
+              <div>
+                <h4>adicionarAresta(u, v)</h4>
+                <p>Insere v na lista de u (e u na de v)</p>
+              </div>
+            </div>
+            <div class="func-item anim-item">
+              <span class="func-num func-blue">2</span>
+              <div>
+                <h4>imprimirLista()</h4>
+                <p>Percorre cada lista encadeada</p>
+              </div>
+            </div>
+            <div class="func-item anim-item">
+              <span class="func-num func-blue">3</span>
+              <div>
+                <h4>calcularGrau(v)</h4>
+                <p>Conta os nós na lista de v</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <pre class="code-block"><code><span class="ck">struct</span> <span class="ct">No</span> {
+  <span class="ct">int</span> dest;
+  <span class="ck">struct</span> <span class="ct">No</span> *prox;
+};
+
+<span class="ck">struct</span> <span class="ct">No</span> *adj[MAX];
+
+<span class="ct">void</span> <span class="cf">adicionarAresta</span>(<span class="ct">int</span> u, <span class="ct">int</span> v) {
+  <span class="cc">/* cria nó e insere na lista */</span>
+  inserir(&amp;adj[u], v);
+  inserir(&amp;adj[v], u);
+}
+
+<span class="ct">int</span> <span class="cf">calcularGrau</span>(<span class="ct">int</span> v) {
+  <span class="ck">struct</span> <span class="ct">No</span> *p = adj[v];
+  <span class="ct">int</span> g = <span class="cn">0</span>;
+  <span class="ck">while</span> (p) { g++; p = p-&gt;prox; }
+  <span class="ck">return</span> g;
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 21 — Fechamento da prática
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="21">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge badge-practice">Prática em C</span>
+        <h2>Escolhendo a Estrutura Certa</h2>
+      </header>
+      <div class="choice-grid">
+        <div class="choice-card choice-gold">
+          <h3 class="c-gold">Matriz de Adjacência</h3>
+          <p>Use quando o grafo é <strong>denso</strong> ou quando precisa <strong>verificar conexões rapidamente</strong></p>
+          <span class="choice-tag tag-gold">O(1) por consulta</span>
+        </div>
+        <div class="choice-vs">vs</div>
+        <div class="choice-card choice-blue">
+          <h3 class="c-blue">Lista de Adjacência</h3>
+          <p>Use quando o grafo é <strong>esparso</strong> ou quando a <strong>memória é limitada</strong></p>
+          <span class="choice-tag tag-blue">O(V+E) de memória</span>
+        </div>
+      </div>
+      <div class="key-message">
+        Ambas resolvem o mesmo problema — a escolha depende do <strong>tipo de grafo</strong> e do <strong>algoritmo</strong> a ser aplicado.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 22 — Conclusão
+  ══════════════════════════════════════════ -->
+  <section class="slide" data-slide="22">
+    <div class="slide-content">
+      <header class="slide-header">
+        <span class="block-badge">Conclusão</span>
+        <h2>Recapitulando</h2>
+      </header>
+      <div class="summary-grid">
+        <div class="summary-item anim-item">
+          <span class="sum-icon">🔗</span>
+          <h4>Grafos</h4>
+          <p>Representam <strong>relações</strong> entre elementos</p>
+        </div>
+        <div class="summary-item anim-item">
+          <span class="sum-icon">📜</span>
+          <h4>Origem</h4>
+          <p><strong>Euler (1736)</strong> — Pontes de Königsberg</p>
+        </div>
+        <div class="summary-item anim-item">
+          <span class="sum-icon">📐</span>
+          <h4>Conceitos</h4>
+          <p>Vértice, Aresta e <strong>Grau</strong></p>
+        </div>
+        <div class="summary-item anim-item">
+          <span class="sum-icon">💾</span>
+          <h4>Estruturas</h4>
+          <p>Matriz e Lista de <strong>Adjacência</strong></p>
+        </div>
+        <div class="summary-item anim-item">
+          <span class="sum-icon">⌨️</span>
+          <h4>Prática</h4>
+          <p>Implementação em <strong>C</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 23 — Encerramento
+  ══════════════════════════════════════════ -->
+  <section class="slide slide-centered slide-end" data-slide="23">
+    <div class="slide-content center-col">
+      <div class="end-graph-wrap">
+        <svg viewBox="0 0 280 160" class="end-svg" aria-hidden="true">
+          <defs>
+            <filter id="end-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <line x1="60" y1="80" x2="140" y2="28" class="end-edge"/>
+          <line x1="140" y1="28" x2="220" y2="80" class="end-edge"/>
+          <line x1="220" y1="80" x2="140" y2="132" class="end-edge"/>
+          <line x1="140" y1="132" x2="60" y2="80" class="end-edge"/>
+          <line x1="60" y1="80" x2="220" y2="80" class="end-edge"/>
+          <line x1="140" y1="28" x2="140" y2="132" class="end-edge"/>
+          <g filter="url(#end-glow)">
+            <circle cx="60" cy="80" r="11" class="end-node"/>
+            <circle cx="140" cy="28" r="11" class="end-node end-node--2"/>
+            <circle cx="220" cy="80" r="11" class="end-node end-node--3"/>
+            <circle cx="140" cy="132" r="11" class="end-node end-node--4"/>
+          </g>
+        </svg>
+      </div>
+      <h1 class="end-title">Obrigado!</h1>
+      <p class="end-subtitle">Perguntas?</p>
+      <p class="end-meta">Estrutura de Dados · 2026.1</p>
+    </div>
+  </section>
+
+</main>
+
+<nav id="nav-bar" aria-label="Navegação da apresentação">
+  <button id="btn-prev" class="nav-btn" title="Anterior (← ↑)" aria-label="Slide anterior" disabled>&#8592;</button>
+  <div id="slide-indicator" aria-live="polite" aria-atomic="true">
+    <span id="current-slide">1</span><span class="nav-sep">/</span><span id="total-slides">23</span>
+  </div>
+  <button id="btn-next" class="nav-btn" title="Próximo (→ ↓ Espaço)" aria-label="Próximo slide">&#8594;</button>
+  <div class="nav-divider"></div>
+  <button id="btn-fullscreen" class="nav-btn" title="Tela cheia (F)" aria-label="Tela cheia">⛶</button>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>
