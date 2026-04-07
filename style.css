@@ -46,6 +46,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
+  font-size: 18px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -119,7 +120,7 @@ html, body {
 
 .nav-btn {
   background: none; border: none;
-  color: var(--text-2); font-size: 17px;
+  color: var(--text-2); font-size: 20px;
   cursor: pointer; padding: 4px 8px; border-radius: var(--r-sm);
   transition: color 0.2s, background 0.2s;
   line-height: 1;
@@ -128,7 +129,7 @@ html, body {
 .nav-btn:disabled { opacity: 0.25; cursor: default; }
 
 #slide-indicator {
-  font-family: var(--font-code); font-size: 12px; font-weight: 500;
+  font-family: var(--font-code); font-size: 14px; font-weight: 500;
   color: var(--text-2); display: flex; align-items: center; gap: 4px;
   min-width: 48px; justify-content: center;
 }
@@ -163,7 +164,7 @@ code {
 /* ── BLOCK BADGES ────────────────────────────────── */
 .block-badge {
   display: inline-block;
-  font-family: var(--font-code); font-size: 10px; font-weight: 500;
+  font-family: var(--font-code); font-size: 12px; font-weight: 500;
   letter-spacing: 0.12em; text-transform: uppercase;
   padding: 4px 12px; border-radius: 20px;
   background: var(--surface); border: 1px solid var(--border-2); color: var(--text-3);
@@ -241,7 +242,7 @@ code {
 }
 
 .cover-eyebrow {
-  font-family: var(--font-code); font-size: 11px; letter-spacing: 0.2em;
+  font-family: var(--font-code); font-size: 13px; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--c-gold); opacity: 0.8;
   margin-bottom: 28px;
   animation: fadeInUp 0.6s var(--ease) 0.1s both;
@@ -279,7 +280,7 @@ code {
 }
 
 .cover-meta {
-  font-family: var(--font-code); font-size: 12px; letter-spacing: 0.1em;
+  font-family: var(--font-code); font-size: 14px; letter-spacing: 0.1em;
   color: var(--text-3);
   animation: fadeInUp 0.5s var(--ease) 0.9s both;
 }
@@ -397,7 +398,7 @@ code {
 .svg-frame { display: flex; align-items: center; justify-content: center; }
 
 .land-text {
-  fill: rgba(255,255,255,0.72); font-family: var(--font-body); font-size: 11px;
+  fill: rgba(255,255,255,0.72); font-family: var(--font-body); font-size: 13px;
   text-anchor: middle; dominant-baseline: middle;
 }
 .bridge-rect {
@@ -405,7 +406,7 @@ code {
   filter: drop-shadow(0 0 5px rgba(212,168,83,0.65));
 }
 .bridge-count {
-  fill: rgba(212,168,83,0.45); font-family: var(--font-code); font-size: 10px;
+  fill: rgba(212,168,83,0.45); font-family: var(--font-code); font-size: 12px;
   text-anchor: middle; dominant-baseline: middle;
 }
 
@@ -418,7 +419,7 @@ code {
 }
 .abs-side { text-align: center; }
 .abs-label {
-  font-family: var(--font-code); font-size: 10px; letter-spacing: 0.12em;
+  font-family: var(--font-code); font-size: 12px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--text-3); margin-bottom: 10px;
 }
 .abs-svg { max-width: 200px; border-radius: var(--r-sm); }
@@ -430,7 +431,7 @@ code {
 .euler-e { stroke: var(--c-gold); stroke-width: 1.5; fill: none; }
 .euler-node { fill: var(--surface-2); stroke: var(--c-gold); stroke-width: 2; }
 .euler-lbl {
-  fill: var(--text); font-family: var(--font-display); font-size: 10px; font-weight: 600;
+  fill: var(--text); font-family: var(--font-display); font-size: 12px; font-weight: 600;
   text-anchor: middle; dominant-baseline: central;
 }
 
@@ -459,16 +460,16 @@ code {
 
 .d-label {
   fill: var(--text); font-family: var(--font-display);
-  font-size: 14px; font-weight: 600;
+  font-size: 16px; font-weight: 600;
   text-anchor: middle; dominant-baseline: central;
 }
-.d-label.sm { font-size: 11px; }
+.d-label.sm { font-size: 13px; }
 
-.d-caption { font-family: var(--font-body); font-size: 10px; text-anchor: middle; dominant-baseline: middle; }
+.d-caption { font-family: var(--font-body); font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
 
-.anno-text { font-family: var(--font-body); font-size: 11px; font-weight: 600; text-anchor: middle; }
+.anno-text { font-family: var(--font-body); font-size: 13px; font-weight: 600; text-anchor: middle; }
 
-.deg-lbl { font-family: var(--font-code); font-size: 11px; text-anchor: middle; fill: var(--text-3); font-weight: 500; }
+.deg-lbl { font-family: var(--font-code); font-size: 13px; text-anchor: middle; fill: var(--text-3); font-weight: 500; }
 .c-gold-fill { fill: var(--c-gold) !important; }
 
 /* ══════════════════════════════════════════════════
@@ -487,7 +488,7 @@ code {
   border-radius: var(--r); margin-bottom: 13px;
 }
 .notation-label {
-  font-family: var(--font-code); font-size: 9px; letter-spacing: 0.12em;
+  font-family: var(--font-code); font-size: 11px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--text-3); margin-bottom: 6px;
 }
 .notation-formula {
@@ -501,7 +502,7 @@ code {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
 }
 .example-label {
-  font-family: var(--font-code); font-size: 9px; letter-spacing: 0.12em;
+  font-family: var(--font-code); font-size: 11px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--text-3); margin-bottom: 7px;
 }
 .example-block p {
@@ -709,7 +710,7 @@ code {
   border-radius: var(--r);
   padding: 17px 22px;
   font-family: var(--font-code);
-  font-size: clamp(0.74rem, 1.05vw, 0.86rem);
+  font-size: clamp(0.86rem, 1.2vw, 1rem);
   line-height: 1.8;
   overflow-x: auto;
   color: var(--text);
@@ -770,10 +771,10 @@ code {
 .summary-item:hover { border-color: var(--c-gold); }
 .sum-icon { font-size: 1.9rem; display: block; margin-bottom: 9px; }
 .summary-item h4 {
-  font-family: var(--font-code); font-size: 0.74rem; letter-spacing: 0.1em;
+  font-family: var(--font-code); font-size: 0.85rem; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--c-gold); margin-bottom: 7px;
 }
-.summary-item p { font-size: 0.84rem; color: var(--text); }
+.summary-item p { font-size: 0.95rem; color: var(--text); }
 
 /* ══════════════════════════════════════════════════
    SLIDE 23 — End
