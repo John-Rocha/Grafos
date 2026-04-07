@@ -139,5 +139,51 @@ document.getElementById('presentation').addEventListener('click', e => {
   else if (x > w - edgeZone) next();
 });
 
+/* ─── Slide Picker ──────────────────────────── */
+const overlay       = document.getElementById('slide-picker-overlay');
+const pickerGrid    = document.getElementById('slide-picker-grid');
+const btnPicker     = document.getElementById('btn-picker');
+const btnPickerClose = document.getElementById('btn-picker-close');
+
+/* Build grid buttons once */
+slides.forEach((slide, i) => {
+  const heading = slide.querySelector('h1, h2');
+  const title   = heading ? heading.textContent.trim() : '—';
+
+  const btn = document.createElement('button');
+  btn.className  = 'picker-btn';
+  btn.dataset.idx = i;
+  btn.innerHTML  = `<span class="picker-num">${i + 1}</span><span class="picker-title">${title}</span>`;
+  btn.addEventListener('click', () => { goTo(i); closePicker(); });
+  pickerGrid.appendChild(btn);
+});
+
+function openPicker() {
+  overlay.hidden = false;
+  /* highlight current slide button */
+  pickerGrid.querySelectorAll('.picker-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === current);
+  });
+  /* scroll active button into view */
+  const active = pickerGrid.querySelector('.picker-btn.active');
+  if (active) active.scrollIntoView({ block: 'center' });
+  btnPickerClose.focus();
+}
+
+function closePicker() {
+  overlay.hidden = true;
+  btnPicker.focus();
+}
+
+btnPicker.addEventListener('click', () => overlay.hidden ? openPicker() : closePicker());
+btnPickerClose.addEventListener('click', closePicker);
+
+overlay.addEventListener('click', e => { if (e.target === overlay) closePicker(); });
+
+document.addEventListener('keydown', e => {
+  if (!overlay.hidden && e.key === 'Escape') { e.preventDefault(); closePicker(); }
+  if ( overlay.hidden && (e.key === 'g' || e.key === 'G')) { e.preventDefault(); openPicker(); }
+});
+
 /* ─── Init ──────────────────────────────────── */
 updateUI();

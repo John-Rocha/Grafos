@@ -529,7 +529,7 @@
         <div class="activity-steps">
           <div class="activity-step anim-item">
             <span class="step-circle">1</span>
-            <span>O professor desenha um grafo simples no quadro</span>
+            <span>Desenharemos um grafo simples no quadro</span>
           </div>
           <div class="activity-step anim-item">
             <span class="step-circle">2</span>
@@ -865,26 +865,27 @@
       </header>
       <div class="two-col">
         <div>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.6rem"><code>adj[MAX][MAX]</code> é uma grade 10×10 de inteiros (todos iniciados em 0). Cada célula indica se dois vértices estão ligados. <code>n</code> guarda quantos vértices o grafo realmente tem.</p>
           <div class="func-list">
             <div class="func-item anim-item">
               <span class="func-num func-gold">1</span>
               <div>
                 <h4>adicionarAresta(u, v)</h4>
-                <p>Define <code>M[u][v] = M[v][u] = 1</code></p>
+                <p>Recebe os índices dos dois vértices. Coloca <code>1</code> em <code>adj[u][v]</code> e também em <code>adj[v][u]</code> — porque o grafo é não-direcionado, a ligação vale nos dois sentidos.</p>
               </div>
             </div>
             <div class="func-item anim-item">
               <span class="func-num func-gold">2</span>
               <div>
                 <h4>imprimirMatriz()</h4>
-                <p>Percorre e exibe a matriz n × n</p>
+                <p>Usa dois <code>for</code> aninhados para percorrer as <em>n</em> linhas e <em>n</em> colunas e exibir cada valor (0 = sem aresta, 1 = com aresta).</p>
               </div>
             </div>
             <div class="func-item anim-item">
               <span class="func-num func-gold">3</span>
               <div>
                 <h4>calcularGrau(v)</h4>
-                <p>Soma todos os elementos da linha v</p>
+                <p>Percorre toda a linha <code>v</code> somando os valores. Como cada célula é 0 ou 1, a soma final é exatamente o número de vizinhos de <code>v</code> — ou seja, seu grau.</p>
               </div>
             </div>
           </div>
@@ -897,6 +898,14 @@
 <span class="ct">void</span> <span class="cf">adicionarAresta</span>(<span class="ct">int</span> u, <span class="ct">int</span> v) {
   adj[u][v] = <span class="cn">1</span>;
   adj[v][u] = <span class="cn">1</span>;
+}
+
+<span class="ct">void</span> <span class="cf">imprimirMatriz</span>() {
+  <span class="ck">for</span> (<span class="ct">int</span> i = <span class="cn">0</span>; i &lt; n; i++) {
+    <span class="ck">for</span> (<span class="ct">int</span> j = <span class="cn">0</span>; j &lt; n; j++)
+      printf(<span class="cs">"%d "</span>, adj[i][j]);
+    printf(<span class="cs">"\n"</span>);
+  }
 }
 
 <span class="ct">int</span> <span class="cf">calcularGrau</span>(<span class="ct">int</span> v) {
@@ -921,26 +930,27 @@
       </header>
       <div class="two-col">
         <div>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.6rem"><code>struct No</code> é um nó de lista encadeada com dois campos: <code>dest</code> (qual vértice ele aponta) e <code>prox</code> (ponteiro para o próximo nó). <code>adj[MAX]</code> é um vetor de ponteiros — cada posição é a cabeça da lista de um vértice.</p>
           <div class="func-list">
             <div class="func-item anim-item">
               <span class="func-num func-blue">1</span>
               <div>
                 <h4>adicionarAresta(u, v)</h4>
-                <p>Insere v na lista de u (e u na de v)</p>
+                <p>Cria um nó com destino <code>v</code> e insere no início da lista de <code>u</code>. Depois faz o mesmo ao contrário: cria nó com destino <code>u</code> e insere na lista de <code>v</code> — garantindo a ligação nos dois sentidos.</p>
               </div>
             </div>
             <div class="func-item anim-item">
               <span class="func-num func-blue">2</span>
               <div>
                 <h4>imprimirLista()</h4>
-                <p>Percorre cada lista encadeada</p>
+                <p>Para cada vértice, percorre sua lista encadeada do primeiro ao último nó, exibindo os vizinhos em sequência.</p>
               </div>
             </div>
             <div class="func-item anim-item">
               <span class="func-num func-blue">3</span>
               <div>
                 <h4>calcularGrau(v)</h4>
-                <p>Conta os nós na lista de v</p>
+                <p>Começa no primeiro nó da lista de <code>v</code> e avança por <code>prox</code> enquanto houver nós, incrementando um contador. Ao final, o contador é o grau de <code>v</code>.</p>
               </div>
             </div>
           </div>
@@ -954,9 +964,20 @@
 <span class="ck">struct</span> <span class="ct">No</span> *adj[MAX];
 
 <span class="ct">void</span> <span class="cf">adicionarAresta</span>(<span class="ct">int</span> u, <span class="ct">int</span> v) {
-  <span class="cc">/* cria nó e insere na lista */</span>
   inserir(&amp;adj[u], v);
   inserir(&amp;adj[v], u);
+}
+
+<span class="ct">void</span> <span class="cf">imprimirLista</span>() {
+  <span class="ck">for</span> (<span class="ct">int</span> i = <span class="cn">0</span>; i &lt; n; i++) {
+    printf(<span class="cs">"%d:"</span>, i);
+    <span class="ck">struct</span> <span class="ct">No</span> *p = adj[i];
+    <span class="ck">while</span> (p) {
+      printf(<span class="cs">" %d"</span>, p-&gt;dest);
+      p = p-&gt;prox;
+    }
+    printf(<span class="cs">"\n"</span>);
+  }
 }
 
 <span class="ct">int</span> <span class="cf">calcularGrau</span>(<span class="ct">int</span> v) {
@@ -1066,7 +1087,7 @@
       </div>
       <h1 class="end-title">Obrigado!</h1>
       <p class="end-subtitle">Perguntas?</p>
-      <p class="end-meta">Estrutura de Dados · 2026.1</p>
+      <p class="end-meta">Teoria dos Grafos · 2026.1</p>
     </div>
   </section>
 
@@ -1079,8 +1100,20 @@
   </div>
   <button id="btn-next" class="nav-btn" title="Próximo (→ ↓ Espaço)" aria-label="Próximo slide">&#8594;</button>
   <div class="nav-divider"></div>
+  <button id="btn-picker" class="nav-btn" title="Ir para slide (G)" aria-label="Selecionar slide">&#9783;</button>
+  <div class="nav-divider"></div>
   <button id="btn-fullscreen" class="nav-btn" title="Tela cheia (F)" aria-label="Tela cheia">⛶</button>
 </nav>
+
+<div id="slide-picker-overlay" aria-modal="true" role="dialog" aria-label="Seletor de slides" hidden>
+  <div id="slide-picker-panel">
+    <div id="slide-picker-header">
+      <span>Ir para slide</span>
+      <button id="btn-picker-close" aria-label="Fechar">&#10005;</button>
+    </div>
+    <div id="slide-picker-grid"></div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
